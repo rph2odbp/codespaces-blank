@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../AuthContext';
 
 export default function SessionManager() {
@@ -16,10 +16,22 @@ export default function SessionManager() {
   const { token } = useAuth();
 
   // Fetch all sessions
-  async function fetchSessions() {
+  const fetchSessions = useCallback(async () => {
+    if (!token) {
+      console.log('SessionManager: No token available, skipping fetch');
+      setError('Authentication required to manage sessions');
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true);
+    console.log('SessionManager: Fetching sessions with token:', token ? 'Token present' : 'No token');
     try {
-      const res = await fetch('/api/sessions');
+      const res = await fetch('/api/sessions', {
+        headers: { 
+          'Authorization': `Bearer ${token}` 
+        },
+      });
       const data = await res.json();
       if (res.ok) {
         setSessions(data);
@@ -27,15 +39,16 @@ export default function SessionManager() {
         setError(data.error || 'Failed to fetch sessions');
       }
     } catch (err) {
+      console.error('SessionManager: Error fetching sessions:', err.message);
       setError('An error occurred while fetching sessions.');
     } finally {
       setIsLoading(false);
     }
-  }
+  }, [token]);
 
   useEffect(() => {
     fetchSessions();
-  }, []);
+  }, [fetchSessions]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -69,6 +82,7 @@ export default function SessionManager() {
         setError(data.error || 'Failed to save session.');
       }
     } catch (err) {
+      console.error('SessionManager: Error saving session:', err.message);
       setError('An error occurred while saving the session.');
     }
   };
@@ -100,6 +114,7 @@ export default function SessionManager() {
         setError(data.error || 'Failed to delete session.');
       }
     } catch (err) {
+      console.error('SessionManager: Error deleting session:', err.message);
       setError('An error occurred while deleting the session.');
     }
   };

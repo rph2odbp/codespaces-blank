@@ -26,7 +26,10 @@ export default function PaymentPage() {
         
         const data = await res.json();
         // We need to fetch session details separately if they are not populated fully
-        const sessionRes = await fetch(`/api/sessions/${data.session}`);
+        console.log('PaymentPage: Fetching session details with token:', token ? 'Token present' : 'No token');
+        const sessionRes = await fetch(`/api/sessions/${data.session}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
         if(!sessionRes.ok) throw new Error('Could not fetch session details.');
 
         const sessionData = await sessionRes.json();
@@ -34,6 +37,7 @@ export default function PaymentPage() {
         setCamper(data);
 
       } catch (err) {
+        console.error('PaymentPage: Error fetching camper details:', err.message);
         setError(err.message);
       } finally {
         setIsLoading(false);
@@ -57,6 +61,7 @@ export default function PaymentPage() {
         setError(data.error || 'Failed to process payment.');
       }
     } catch (err) {
+      console.error('PaymentPage: Error in confirm deposit:', err.message);
       setError('An error occurred during payment confirmation.');
     }
   };

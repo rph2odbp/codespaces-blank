@@ -71,6 +71,7 @@ export default function EditCamper() {
         setError(data.error || 'Failed to update camper details.');
       }
     } catch (err) {
+      console.error('EditCamper: Error saving camper:', err.message);
       setError('An error occurred while saving.');
     }
   };

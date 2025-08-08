@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../../AuthContext';
 
 export default function SessionManager() {
@@ -15,22 +15,35 @@ export default function SessionManager() {
   });
 
   // Fetch all sessions
-  async function fetchSessions() {
+  const fetchSessions = useCallback(async () => {
+    if (!token) {
+      console.log('Admin SessionManager: No token available, skipping fetch');
+      setError('Authentication required to manage sessions');
+      setIsLoading(false);
+      return;
+    }
+
+    console.log('Admin SessionManager: Fetching sessions with token:', token ? 'Token present' : 'No token');
     try {
-      const res = await fetch('/api/sessions');
+      const res = await fetch('/api/sessions', {
+        headers: { 
+          'Authorization': `Bearer ${token}` 
+        },
+      });
       if (!res.ok) throw new Error('Failed to fetch');
       const data = await res.json();
       setSessions(data);
     } catch (err) {
+      console.error('Admin SessionManager: Error fetching sessions:', err.message);
       setError('Could not load sessions.');
     } finally {
       setIsLoading(false);
     }
-  }
+  }, [token]);
 
   useEffect(() => {
     fetchSessions();
-  }, []);
+  }, [fetchSessions]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -57,6 +70,7 @@ export default function SessionManager() {
       setFormData({ name: '', startDate: '', endDate: '', capacity: 100, cost: 500 });
       fetchSessions(); 
     } catch (err) {
+      console.error('Admin SessionManager: Error submitting session:', err.message);
       setError(err.message);
     }
   };
@@ -71,6 +85,7 @@ export default function SessionManager() {
       });
       fetchSessions(); // Refresh list
     } catch (err) {
+      console.error('Admin SessionManager: Error deleting session:', err.message);
       setError('Failed to delete session.');
     }
   };

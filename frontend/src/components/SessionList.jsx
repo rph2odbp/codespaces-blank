@@ -1,14 +1,28 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '../AuthContext';
 
 export default function SessionList() {
+  const { token } = useAuth();
   const [sessions, setSessions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
     async function fetchSessions() {
+      if (!token) {
+        console.log('SessionList: No token available, skipping fetch');
+        setError('Authentication required to view sessions');
+        setIsLoading(false);
+        return;
+      }
+
+      console.log('SessionList: Fetching sessions with token:', token ? 'Token present' : 'No token');
       try {
-        const res = await fetch('/api/sessions');
+        const res = await fetch('/api/sessions', {
+          headers: { 
+            'Authorization': `Bearer ${token}` 
+          },
+        });
         const data = await res.json();
         if (res.ok) {
           setSessions(data);
@@ -16,13 +30,14 @@ export default function SessionList() {
           setError(data.error || 'Failed to fetch sessions');
         }
       } catch (err) {
+        console.error('SessionList: Error fetching sessions:', err.message);
         setError('An error occurred while fetching sessions.');
       } finally {
         setIsLoading(false);
       }
     }
     fetchSessions();
-  }, []);
+  }, [token]);
 
   if (isLoading) return <p>Loading sessions...</p>;
   if (error) return <p style={{ color: 'red' }}>{error}</p>;

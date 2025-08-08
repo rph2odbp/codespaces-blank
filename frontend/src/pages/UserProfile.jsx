@@ -31,7 +31,9 @@ export default function UserProfile() {
           setForm({ firstName: data.firstName, lastName: data.lastName, email: data.email });
           setAvatar(data.avatar || '');
         }
-      } catch {}
+      } catch (err) {
+        console.error('UserProfile: Error fetching profile:', err.message);
+      }
     }
     fetchProfile();
   }, [token]);

@@ -26,8 +26,19 @@ export default function CamperRegistration() {
 
   useEffect(() => {
     async function fetchSessions() {
+      if (!token) {
+        console.log('CamperRegistration: No token available, skipping fetch');
+        setError('Authentication required to view sessions');
+        return;
+      }
+
+      console.log('CamperRegistration: Fetching sessions with token:', token ? 'Token present' : 'No token');
       try {
-        const res = await fetch('/api/sessions');
+        const res = await fetch('/api/sessions', {
+          headers: { 
+            'Authorization': `Bearer ${token}` 
+          },
+        });
         if (!res.ok) throw new Error('Failed to fetch sessions');
         const data = await res.json();
         setSessions(data);
@@ -36,7 +47,7 @@ export default function CamperRegistration() {
       }
     }
     fetchSessions();
-  }, []);
+  }, [token]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
