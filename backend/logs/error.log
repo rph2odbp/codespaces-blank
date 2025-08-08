@@ -1,0 +1,17 @@
+{"level":"error","message":"Login failed: Invalid credentials for email ryanhallford.tx@gmail.com","timestamp":"2025-08-07T23:26:38.301Z"}
+{"level":"error","message":"Validation errors: [{\"type\":\"field\",\"value\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODk0ZTczZTQzYWRmMzdmYTE3NGZlODIiLCJyb2xlIjoic3VwZXJhZG1pbiIsImlhdCI6MTc1NDYwOTI0NiwiZXhwIjoxNzU1MjE0MDQ2fQ.vJjIOfMnkLAEexX7yb_sRW_RxrGOuvEoxEdCueW477s\",\"msg\":\"Valid email is required.\",\"path\":\"email\",\"location\":\"body\"},{\"type\":\"field\",\"msg\":\"Password is required.\",\"path\":\"password\",\"location\":\"body\"}]","timestamp":"2025-08-07T23:27:26.606Z"}
+{"level":"error","message":"Login failed: Invalid credentials for email ryanhallford.br@gmail.com","timestamp":"2025-08-07T23:27:32.831Z"}
+{"level":"error","message":"Login failed: Invalid credentials for email rph2odbp@gmail.com","timestamp":"2025-08-07T23:27:42.270Z"}
+{"level":"error","message":"Registration failed: User already exists with email rph2odbp@gmail.com","timestamp":"2025-08-07T23:28:19.065Z"}
+{"level":"error","message":"Login failed: Invalid credentials for email rph2odbp@gmail.com","timestamp":"2025-08-07T23:40:01.272Z"}
+{"level":"error","message":"Login failed: Invalid credentials for email rph2odbp@gmail.com","timestamp":"2025-08-07T23:42:04.411Z"}
+{"level":"error","message":"Login failed: Invalid credentials for email rph2odbp@gmail.com","timestamp":"2025-08-07T23:47:48.412Z"}
+{"level":"error","message":"Login failed: Invalid credentials for email rph2odbp@gmail.com","timestamp":"2025-08-07T23:48:12.196Z"}
+{"level":"error","message":"Login failed: Invalid credentials for email rph2odbp@gmail.com","timestamp":"2025-08-07T23:49:59.353Z"}
+{"level":"error","message":"Login failed: Invalid credentials for email rph2odbp@gmail.com","timestamp":"2025-08-07T23:50:08.344Z"}
+{"level":"error","message":"Login failed: Invalid credentials for email rph2odbp@gmail.com","timestamp":"2025-08-07T23:53:33.927Z"}
+{"level":"error","message":"Login failed: Invalid credentials for email rph2odbp@gmail.com","timestamp":"2025-08-08T01:02:15.291Z"}
+{"level":"error","message":"Login failed: Invalid credentials for email rph2odbp@gmail.com","timestamp":"2025-08-08T04:15:17.978Z"}
+{"level":"error","message":"Login failed: Invalid credentials for email rph2odbp@gmail.com","timestamp":"2025-08-08T04:15:55.037Z"}
+{"level":"error","message":"Login failed: Invalid credentials for email rph2odbp@gmail.com","timestamp":"2025-08-08T04:25:41.052Z"}
+{"level":"error","message":"Login failed: Invalid credentials for email user@example.com","timestamp":"2025-08-08T05:11:00.183Z"}

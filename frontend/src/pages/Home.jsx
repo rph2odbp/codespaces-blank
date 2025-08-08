@@ -1,16 +1,13 @@
-// src/pages/Home.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
+import SessionList from '../components/SessionList'; // 1. Import the component
 
 export default function Home() {
   return (
     <div>
-      <h1>Camp Abbey Portal</h1>
-      <nav>
-        <Link to="/admin-login">Admin Login</Link> |{' '}
-        <Link to="/parent-login">Parent Login</Link> |{' '}
-        <Link to="/staff-apply">Staff Application</Link>
-      </nav>
+      <h1>Welcome to Camp Abbey!</h1>
+      <p>The best camp in the world.</p>
+      <hr />
+      <SessionList /> {/* 2. Add the component here */}
     </div>
   );
 }
