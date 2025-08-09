@@ -10,13 +10,22 @@ const userSchema = new mongoose.Schema({
     trim: true,
     match: [/\S+@\S+\.\S+/, 'Please use a valid email address.'],
   },
+  firebaseUid: {
+    type: String,
+    unique: true,
+    sparse: true, // Allow null values but ensure uniqueness when present
+    index: true,
+  },
   avatar: {
     type: String,
     default: null, // Default to null if no avatar is provided
   },
   password: {
     type: String,
-    required: [true, 'Password is required.'],
+    required: function() {
+      // Password is required only if no Firebase UID (legacy users)
+      return !this.firebaseUid;
+    },
     minlength: [8, 'Password must be at least 8 characters long.'],
     select: false, // Exclude password from query results by default
   },

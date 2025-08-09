@@ -328,3 +328,6 @@
 {"level":"info","message":"Incoming Request: GET /api/sessions","timestamp":"2025-08-08T18:24:59.804Z"}
 {"level":"warn","message":"Authorization header is missing.","timestamp":"2025-08-08T18:24:59.813Z"}
 {"level":"info","message":"Response: GET / - Status: 401","timestamp":"2025-08-08T18:24:59.818Z"}
+{"level":"info","message":"Firebase Admin SDK initialized with default credentials","timestamp":"2025-08-09T15:42:46.487Z"}
+{"level":"info","message":"Firebase Admin SDK initialized successfully","timestamp":"2025-08-09T15:42:46.489Z"}
+{"level":"info","message":"Server is running on port 4000 in development mode","timestamp":"2025-08-09T15:42:46.596Z"}
