@@ -1,0 +1,81 @@
+{
+  "rules": {
+    // Users can read/write their own data
+    "users": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid == $uid || auth.token.role == 'admin' || auth.token.role == 'superadmin')",
+        ".write": "auth != null && (auth.uid == $uid || auth.token.role == 'admin' || auth.token.role == 'superadmin')"
+      }
+    },
+    
+    // Camper data - parents can read/write their campers, staff+ can read all
+    "campers": {
+      "$camperId": {
+        ".read": "auth != null && (auth.token.role == 'staff' || auth.token.role == 'admin' || auth.token.role == 'superadmin' || root.child('campers').child($camperId).child('parentUid').val() == auth.uid)",
+        ".write": "auth != null && (auth.token.role == 'staff' || auth.token.role == 'admin' || auth.token.role == 'superadmin' || root.child('campers').child($camperId).child('parentUid').val() == auth.uid)"
+      }
+    },
+    
+    // Sessions data - staff+ can read/write, parents can read
+    "sessions": {
+      ".read": "auth != null",
+      ".write": "auth != null && (auth.token.role == 'staff' || auth.token.role == 'admin' || auth.token.role == 'superadmin')",
+      "$sessionId": {
+        // Allow parents to register their campers for sessions
+        "registrations": {
+          "$registrationId": {
+            ".write": "auth != null && (auth.token.role == 'staff' || auth.token.role == 'admin' || auth.token.role == 'superadmin' || newData.child('parentUid').val() == auth.uid)"
+          }
+        }
+      }
+    },
+    
+    // Messages - users can send messages, staff+ can read all
+    "messages": {
+      ".read": "auth != null && (auth.token.role == 'staff' || auth.token.role == 'admin' || auth.token.role == 'superadmin')",
+      ".write": "auth != null",
+      "$messageId": {
+        ".validate": "newData.hasChildren(['from', 'message', 'timestamp'])",
+        "from": {
+          ".validate": "newData.val() == auth.uid"
+        },
+        "message": {
+          ".validate": "newData.isString() && newData.val().length <= 1000"
+        },
+        "timestamp": {
+          ".validate": "newData.val() <= now"
+        }
+      }
+    },
+    
+    // Admin data - only admin+ can access
+    "admin": {
+      ".read": "auth != null && (auth.token.role == 'admin' || auth.token.role == 'superadmin')",
+      ".write": "auth != null && (auth.token.role == 'admin' || auth.token.role == 'superadmin')"
+    },
+    
+    // Super admin data - only superadmin can access
+    "superadmin": {
+      ".read": "auth != null && auth.token.role == 'superadmin'",
+      ".write": "auth != null && auth.token.role == 'superadmin'"
+    },
+    
+    // Staff data - staff+ can access
+    "staff": {
+      ".read": "auth != null && (auth.token.role == 'staff' || auth.token.role == 'admin' || auth.token.role == 'superadmin')",
+      ".write": "auth != null && (auth.token.role == 'staff' || auth.token.role == 'admin' || auth.token.role == 'superadmin')"
+    },
+    
+    // Public data - anyone can read
+    "public": {
+      ".read": true,
+      ".write": "auth != null && (auth.token.role == 'admin' || auth.token.role == 'superadmin')"
+    },
+    
+    // Default deny all other paths
+    "$other": {
+      ".read": false,
+      ".write": false
+    }
+  }
+}

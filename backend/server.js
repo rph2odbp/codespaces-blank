@@ -8,9 +8,22 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet'); // Security headers
 const compression = require('compression'); // Gzip compression
 const cors = require('cors'); // Cross-Origin Resource Sharing
+const { initializeFirebase } = require('./config/firebase'); // Firebase initialization
 
 // Load environment variables
 dotenv.config();
+
+// Initialize Firebase Admin SDK
+try {
+  initializeFirebase();
+  logger.info('Firebase Admin SDK initialized successfully');
+} catch (error) {
+  logger.error('Failed to initialize Firebase Admin SDK:', error);
+  // Continue without Firebase in development mode
+  if (process.env.NODE_ENV === 'production') {
+    process.exit(1);
+  }
+}
 
 // Initialize Express app
 const app = express();
@@ -61,6 +74,7 @@ app.use((req, res, next) => {
 
 // Define API Routes
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/firebase-auth', require('./routes/firebaseAuth')); // Firebase authentication routes
 app.use('/api/sessions', require('./routes/sessions'));
 app.use('/api/campers', require('./routes/campers'));
 app.use('/api/parent', require('./routes/parent'));
